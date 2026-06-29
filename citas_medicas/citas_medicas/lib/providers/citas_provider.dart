@@ -6,12 +6,15 @@
 // oficial de Flutter) como fuente de verdad de las citas.
 // ============================================================
 
+// ============================================================
+// ARCHIVO: lib/providers/citas_provider.dart
+// ============================================================
+
 import 'package:flutter/material.dart';
 import '../models/cita.dart';
 
 class CitasProvider extends ChangeNotifier {
   final List<Cita> _citas = [
-    // Datos de ejemplo para que la lista no aparezca vacía al inicio
     Cita(
       id: '1',
       paciente: 'Juan Pérez',
@@ -30,40 +33,27 @@ class CitasProvider extends ChangeNotifier {
       motivo: 'Control de rutina',
       estado: 'Atendida',
     ),
-    Cita(
-      id: '3',
-      paciente: 'Carlos Torres',
-      especialidad: 'Cardiología',
-      profesional: 'Dr. Vega',
-      fechaHora: DateTime(2026, 6, 25, 11, 0),
-      motivo: 'Electrocardiograma',
-      estado: 'Reprogramada',
-    ),
   ];
 
   List<Cita> get citas => List.unmodifiable(_citas);
 
-  /// Agrega una nueva cita y notifica a los widgets suscritos.
   void agregarCita(Cita cita) {
     _citas.add(cita);
     notifyListeners();
   }
 
-  /// Cambia el estado de una cita existente.
   void cambiarEstado(String id, String nuevoEstado) {
     final index = _citas.indexWhere((c) => c.id == id);
     if (index != -1) {
-      _citas[index].estado = nuevoEstado;
+      _citas[index] = _citas[index].copyWith(estado: nuevoEstado);
       notifyListeners();
     }
   }
 
-  /// Elimina una cita por su id.
   void eliminarCita(String id) {
     _citas.removeWhere((c) => c.id == id);
     notifyListeners();
   }
 
-  /// Genera un id único simple basado en timestamp.
   String generarId() => DateTime.now().millisecondsSinceEpoch.toString();
 }
