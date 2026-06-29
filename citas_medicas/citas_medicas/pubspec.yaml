@@ -40,7 +40,7 @@ dependencies:
   # AÑADIDO: gestión de estado con ChangeNotifier.
   # Permite compartir la lista de citas entre RegistroCitaPage y
   # ListaCitasPage sin pasar callbacks manualmente entre pantallas.
-  provider: ^6.1.2
+  
 
 dev_dependencies:
   flutter_test:
