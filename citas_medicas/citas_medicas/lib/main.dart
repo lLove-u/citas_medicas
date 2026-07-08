@@ -3,10 +3,13 @@ import 'package:provider/provider.dart';
 import 'providers/citas_provider.dart';
 import 'registro_cita.dart';
 import 'listas_citas.dart';
+import 'screens/welcome_screen.dart';
 
 // MODIFICADO: se envuelve la app con ChangeNotifierProvider para que
 // CitasProvider (estado compartido de citas) sea accesible en todas
 // las páginas. Sin esto, las citas registradas nunca llegarían a la lista.
+
+
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -55,7 +58,7 @@ class CitasMedicasApp extends StatelessWidget {
           fillColor: Colors.grey.shade50,
         ),
       ),
-      home: const InicioPage(),
+      home: const WelcomeScreen(),
     );
   }
 }
