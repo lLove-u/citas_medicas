@@ -5,11 +5,14 @@ import 'registro_cita.dart';
 import 'listas_citas.dart';
 import 'screens/welcome_screen.dart';
 
+<<<<<<< HEAD
 // MODIFICADO: se envuelve la app con ChangeNotifierProvider para que
 // CitasProvider (estado compartido de citas) sea accesible en todas
 // las páginas. Sin esto, las citas registradas nunca llegarían a la lista.
 
 
+=======
+>>>>>>> 8e2c1c46248a21c0db4cfa7ba747bc84b79c26b2
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -27,218 +30,163 @@ class CitasMedicasApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Citas Médicas',
-      // AÑADIDO: ThemeData con colores médicos. El original no tenía tema,
-      // lo que causaba que botones y AppBar usaran el gris por defecto.
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1565C0),
-          brightness: Brightness.light,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1565C0)),
         useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF1565C0),
-          foregroundColor: Colors.white,
-          elevation: 2,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF1565C0),
-            foregroundColor: Colors.white,
-            minimumSize: const Size(double.infinity, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          filled: true,
-          fillColor: Colors.grey.shade50,
-        ),
       ),
+<<<<<<< HEAD
       home: const WelcomeScreen(),
+=======
+      home: const SplashPage(),
     );
   }
 }
 
-// MODIFICADO: InicioPage mejorada visualmente. Se mantiene la misma
-// estructura (dos botones: Registrar y Ver Citas) pero ahora usa
-// tarjetas con ícono y descripción, y muestra el total de citas.
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2200),
+    );
+
+    _opacityAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 35),
+      TweenSequenceItem(tween: ConstantTween<double>(1.0), weight: 45),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 20),
+    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    _controller.forward().whenComplete(() {
+      Navigator.of(context).pushReplacement(
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const InicioPage(),
+          transitionDuration: const Duration(milliseconds: 700),
+          transitionsBuilder: (_, animation, __, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: AnimatedBuilder(
+        animation: _opacityAnimation,
+        builder: (context, child) {
+          return Opacity(opacity: _opacityAnimation.value, child: child);
+        },
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF1565C0), Color(0xFF42A5F5)],
+            ),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset('assets/cruz_medica.png', width: 140, height: 140),
+                const SizedBox(height: 24),
+                const Text(
+                  'SmartClinic Salud Integral',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Bienvenido al sistema de citas',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+>>>>>>> 8e2c1c46248a21c0db4cfa7ba747bc84b79c26b2
+    );
+  }
+}
+
 class InicioPage extends StatelessWidget {
   const InicioPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Contador reactivo: se actualiza cada vez que se agrega una cita
-    final totalCitas = context.watch<CitasProvider>().citas.length;
-
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4FF),
-      appBar: AppBar(
-        title: const Text("Citas Médicas"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Citas Médicas"), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 20),
+            // Imagen de la cruz
+            Image.asset('assets/cruz_medica.png', width: 150, height: 150),
+            const SizedBox(height: 10),
 
-            // AÑADIDO: ícono médico decorativo
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.15),
-                    blurRadius: 20,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.local_hospital,
-                size: 60,
+            // Nombre de la empresa
+            const Text(
+              'SmartClinic Salud Integral',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
                 color: Color(0xFF1565C0),
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            // ORIGINAL conservado — mismo texto, mismo estilo
-            const Text(
-              "Sistema de Gestión de Citas",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            // AÑADIDO: badge con total de citas registradas
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1565C0).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                '$totalCitas cita${totalCitas == 1 ? '' : 's'} registrada${totalCitas == 1 ? '' : 's'}',
-                style: const TextStyle(
-                  color: Color(0xFF1565C0),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-
             const SizedBox(height: 30),
 
-            // ORIGINAL conservado — misma acción, mejorado visualmente
-            _MenuCard(
-              icon: Icons.add_circle_outline,
-              titulo: 'Registrar Cita',
-              descripcion: 'Programa una nueva cita médica',
-              onTap: () {
-                Navigator.push(
+            // Botón para registrar cita
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegistroCitaPage(),
-                  ),
-                );
-              },
+                  MaterialPageRoute(builder: (_) => const RegistroCitaPage()),
+                ),
+                child: const Text('Registrar Cita'),
+              ),
             ),
-
             const SizedBox(height: 15),
 
-            // ORIGINAL conservado — misma acción, mejorado visualmente
-            _MenuCard(
-              icon: Icons.list_alt,
-              titulo: 'Ver Citas',
-              descripcion: 'Consulta y gestiona las citas existentes',
-              onTap: () {
-                Navigator.push(
+            // Botón para ver citas
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const ListaCitasPage(),
-                  ),
-                );
-              },
+                  MaterialPageRoute(builder: (_) => const ListasCitasPage()),
+                ),
+                child: const Text('Ver Citas'),
+              ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-// AÑADIDO: widget de tarjeta de menú reutilizable para los dos accesos.
-class _MenuCard extends StatelessWidget {
-  final IconData icon;
-  final String titulo;
-  final String descripcion;
-  final VoidCallback onTap;
-
-  const _MenuCard({
-    required this.icon,
-    required this.titulo,
-    required this.descripcion,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(14),
-      elevation: 2,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1565C0).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, color: const Color(0xFF1565C0), size: 28),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      titulo,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1A237E),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      descripcion,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_right, color: Colors.grey),
-            ],
-          ),
         ),
       ),
     );

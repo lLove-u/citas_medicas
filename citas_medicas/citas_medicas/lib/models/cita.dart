@@ -5,14 +5,18 @@
 // mostrar datos reales en la lista, o validar campos.
 // ============================================================
 
+// ============================================================
+// ARCHIVO: lib/models/cita.dart
+// ============================================================
+
 class Cita {
   final String id;
   final String paciente;
-  final String especialidad;
+  final String especialidad; 
   final String profesional;
   final DateTime fechaHora;
   final String motivo;
-  String estado;
+  final String estado;
 
   Cita({
     required this.id,
@@ -21,16 +25,26 @@ class Cita {
     required this.profesional,
     required this.fechaHora,
     required this.motivo,
-    this.estado = 'Programada',
+    required this.estado,
   });
 
-  /// Color asociado al estado para la UI.
-  static const Map<String, int> coloresEstado = {
-    'Programada':   0xFF1976D2, // azul
-    'Atendida':     0xFF388E3C, // verde
-    'Cancelada':    0xFFD32F2F, // rojo
-    'Reprogramada': 0xFFF57C00, // naranja
-  };
-
-  int get colorEstado => coloresEstado[estado] ?? 0xFF757575;
+  Cita copyWith({
+    String? id,
+    String? paciente,
+    String? especialidad,
+    String? profesional,
+    DateTime? fechaHora,
+    String? motivo,
+    String? estado,
+  }) {
+    return Cita(
+      id: id ?? this.id,
+      paciente: paciente ?? this.paciente,
+      especialidad: especialidad ?? this.especialidad,
+      profesional: profesional ?? this.profesional,
+      fechaHora: fechaHora ?? this.fechaHora,
+      motivo: motivo ?? this.motivo,
+      estado: estado ?? this.estado,
+    );
+  }
 }
