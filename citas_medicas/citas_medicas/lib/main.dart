@@ -7,16 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/citas_provider.dart';
 import 'registro_cita.dart';
 import 'listas_citas.dart';
-import 'screens/welcome_screen.dart';
 
-<<<<<<< HEAD
-// MODIFICADO: se envuelve la app con ChangeNotifierProvider para que
-// CitasProvider (estado compartido de citas) sea accesible en todas
-// las páginas. Sin esto, las citas registradas nunca llegarían a la lista.
-
-
-=======
->>>>>>> 8e2c1c46248a21c0db4cfa7ba747bc84b79c26b2
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -38,9 +29,6 @@ class CitasMedicasApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1565C0)),
         useMaterial3: true,
       ),
-<<<<<<< HEAD
-      home: const WelcomeScreen(),
-=======
       home: const SplashPage(),
     );
   }
@@ -138,7 +126,6 @@ class _SplashPageState extends State<SplashPage>
           ),
         ),
       ),
->>>>>>> 8e2c1c46248a21c0db4cfa7ba747bc84b79c26b2
     );
   }
 }
